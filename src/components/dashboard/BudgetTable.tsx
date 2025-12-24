@@ -55,22 +55,22 @@ const BudgetTable = () => {
                 <td className="px-2 py-1.5 font-medium text-foreground border-b border-border whitespace-nowrap text-[10px]">
                   {centre.nom}
                 </td>
-                <td className="px-1 py-1.5 text-right font-mono text-foreground border-b border-l border-border text-[10px]">
+                <td className="px-1 py-1.5 text-right font-mono text-foreground border-b border-l border-border text-[10px] whitespace-nowrap">
                   {formatCurrency(centre.ingressos.acumulat)}
                 </td>
-                <td className="px-1 py-1.5 text-right font-mono text-foreground border-b border-border text-[10px]">
+                <td className="px-1 py-1.5 text-right font-mono text-foreground border-b border-border text-[10px] whitespace-nowrap">
                   {formatCurrency(centre.ingressos.previst)}
                 </td>
-                <td className="px-1 py-1.5 text-right font-mono text-foreground border-b border-l border-border text-[10px]">
+                <td className="px-1 py-1.5 text-right font-mono text-foreground border-b border-l border-border text-[10px] whitespace-nowrap">
                   {formatCurrency(centre.despeses.acumulat)}
                 </td>
-                <td className="px-1 py-1.5 text-right font-mono text-foreground border-b border-border text-[10px]">
+                <td className="px-1 py-1.5 text-right font-mono text-foreground border-b border-border text-[10px] whitespace-nowrap">
                   {formatCurrency(centre.despeses.previst)}
                 </td>
-                <td className="px-1 py-1.5 text-right font-mono text-foreground border-b border-l border-border text-[10px]">
+                <td className="px-1 py-1.5 text-right font-mono text-foreground border-b border-l border-border text-[10px] whitespace-nowrap">
                   {formatCurrency(centre.inversions.acumulat)}
                 </td>
-                <td className="px-1 py-1.5 text-right font-mono text-foreground border-b border-border text-[10px]">
+                <td className="px-1 py-1.5 text-right font-mono text-foreground border-b border-border text-[10px] whitespace-nowrap">
                   {formatCurrency(centre.inversions.previst)}
                 </td>
               </tr>
@@ -80,22 +80,22 @@ const BudgetTable = () => {
               <td className="px-2 py-2 font-bold text-foreground border-t-2 border-primary text-[10px]">
                 TOTAL
               </td>
-              <td className="px-1 py-2 text-right font-mono text-foreground border-t-2 border-l border-primary text-[10px]">
+              <td className="px-1 py-2 text-right font-mono text-foreground border-t-2 border-l border-primary text-[10px] whitespace-nowrap">
                 {formatCurrency(totals.ingressos.acumulat)}
               </td>
-              <td className="px-1 py-2 text-right font-mono text-foreground border-t-2 border-primary text-[10px]">
+              <td className="px-1 py-2 text-right font-mono text-foreground border-t-2 border-primary text-[10px] whitespace-nowrap">
                 {formatCurrency(totals.ingressos.previst)}
               </td>
-              <td className="px-1 py-2 text-right font-mono text-foreground border-t-2 border-l border-primary text-[10px]">
+              <td className="px-1 py-2 text-right font-mono text-foreground border-t-2 border-l border-primary text-[10px] whitespace-nowrap">
                 {formatCurrency(totals.despeses.acumulat)}
               </td>
-              <td className="px-1 py-2 text-right font-mono text-foreground border-t-2 border-primary text-[10px]">
+              <td className="px-1 py-2 text-right font-mono text-foreground border-t-2 border-primary text-[10px] whitespace-nowrap">
                 {formatCurrency(totals.despeses.previst)}
               </td>
-              <td className="px-1 py-2 text-right font-mono text-foreground border-t-2 border-l border-primary text-[10px]">
+              <td className="px-1 py-2 text-right font-mono text-foreground border-t-2 border-l border-primary text-[10px] whitespace-nowrap">
                 {formatCurrency(totals.inversions.acumulat)}
               </td>
-              <td className="px-1 py-2 text-right font-mono text-foreground border-t-2 border-primary text-[10px]">
+              <td className="px-1 py-2 text-right font-mono text-foreground border-t-2 border-primary text-[10px] whitespace-nowrap">
                 {formatCurrency(totals.inversions.previst)}
               </td>
             </tr>
