@@ -232,23 +232,76 @@ export const detallAeroports: DetallAeroport[] = [
   },
 ];
 
-// ============ COMERCIAL / PROMOCIÓ ============
-export const promocio = {
-  ingressos: [
-    { concepte: "Conveni Diputació Lleida", acumulat: 144000, estimacio: 180000, pressupost: 180000 },
-    { concepte: "Conveni Ajuntament Barcelona", acumulat: 40000, estimacio: 40000, pressupost: 40000 },
-    { concepte: "Conveni Govern Andorra", acumulat: 411964, estimacio: 411964, pressupost: 450000 },
-  ],
-  despeses: [
-    { aeroport: "BCN", concepte: "CDRA", acumulat: 0, estimacio: 0, pressupost: 0 },
-    { aeroport: "GRO", concepte: "GROwing Girona", acumulat: 756312, estimacio: 825608, pressupost: 825608 },
-    { aeroport: "REU", concepte: "Promoció aeroport de Reus", acumulat: 429917, estimacio: 469000, pressupost: 469000 },
-    { aeroport: "LLEI", concepte: "Promoció rutes Lleida", acumulat: 702500, estimacio: 750000, pressupost: 750000 },
-  ],
-  totals: {
-    ingressos: { acumulat: 595964, estimacio: 631964, pressupost: 670000 },
-    despeses: { acumulat: 1888729, estimacio: 2044608, pressupost: 2044608 },
-    resultat: { acumulat: -1292765, estimacio: -1412644, pressupost: -1374608 },
+// ============ COMERCIAL (#7) ============
+// Estructura: MES | Acumulat | Projecció | Pressupost SACC | Disponibilitat
+// Filas: BCN, GRO, REU, LLEIDA, LESU
+
+export interface ComercialAeroport {
+  codi: string;
+  nom: string;
+  despeses: {
+    mes: number;
+    acumulat: number;
+    projeccio: number;
+    pressupostSACC: number;
+    disponibilitat: number;
+  };
+  ingressos: {
+    mes: number;
+    acumulat: number;
+    projeccio: number;
+    pressupostSACC: number;
+    disponibilitat: number;
+  };
+}
+
+export const comercialAeroports: ComercialAeroport[] = [
+  {
+    codi: "BCN",
+    nom: "Barcelona",
+    despeses: { mes: 15820, acumulat: 174264, projeccio: 190106, pressupostSACC: 210000, disponibilitat: 35736 },
+    ingressos: { mes: 3636, acumulat: 40000, projeccio: 40000, pressupostSACC: 40000, disponibilitat: 0 },
+  },
+  {
+    codi: "GRO",
+    nom: "Girona",
+    despeses: { mes: 72798, acumulat: 800779, projeccio: 873577, pressupostSACC: 900000, disponibilitat: 99221 },
+    ingressos: { mes: 0, acumulat: 0, projeccio: 0, pressupostSACC: 0, disponibilitat: 0 },
+  },
+  {
+    codi: "REU",
+    nom: "Reus",
+    despeses: { mes: 40703, acumulat: 447737, projeccio: 488441, pressupostSACC: 520000, disponibilitat: 72263 },
+    ingressos: { mes: 0, acumulat: 0, projeccio: 0, pressupostSACC: 0, disponibilitat: 0 },
+  },
+  {
+    codi: "LLEI",
+    nom: "Lleida-Alguaire",
+    despeses: { mes: 527259, acumulat: 5799850, projeccio: 6327109, pressupostSACC: 6800000, disponibilitat: 1000150 },
+    ingressos: { mes: 91853, acumulat: 1010385, projeccio: 1102238, pressupostSACC: 1150000, disponibilitat: 139615 },
+  },
+  {
+    codi: "LESU",
+    nom: "Andorra-La Seu",
+    despeses: { mes: 144493, acumulat: 1589419, projeccio: 1733911, pressupostSACC: 1850000, disponibilitat: 260581 },
+    ingressos: { mes: 27593, acumulat: 303514, projeccio: 331107, pressupostSACC: 350000, disponibilitat: 46486 },
+  },
+];
+
+export const comercialTotals = {
+  despeses: {
+    mes: comercialAeroports.reduce((sum, a) => sum + a.despeses.mes, 0),
+    acumulat: comercialAeroports.reduce((sum, a) => sum + a.despeses.acumulat, 0),
+    projeccio: comercialAeroports.reduce((sum, a) => sum + a.despeses.projeccio, 0),
+    pressupostSACC: comercialAeroports.reduce((sum, a) => sum + a.despeses.pressupostSACC, 0),
+    disponibilitat: comercialAeroports.reduce((sum, a) => sum + a.despeses.disponibilitat, 0),
+  },
+  ingressos: {
+    mes: comercialAeroports.reduce((sum, a) => sum + a.ingressos.mes, 0),
+    acumulat: comercialAeroports.reduce((sum, a) => sum + a.ingressos.acumulat, 0),
+    projeccio: comercialAeroports.reduce((sum, a) => sum + a.ingressos.projeccio, 0),
+    pressupostSACC: comercialAeroports.reduce((sum, a) => sum + a.ingressos.pressupostSACC, 0),
+    disponibilitat: comercialAeroports.reduce((sum, a) => sum + a.ingressos.disponibilitat, 0),
   },
 };
 
