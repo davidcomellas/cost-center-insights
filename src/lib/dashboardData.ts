@@ -259,32 +259,32 @@ export const comercialAeroports: ComercialAeroport[] = [
   {
     codi: "BCN",
     nom: "Barcelona",
-    despeses: { mes: 15820, acumulat: 174264, projeccio: 190106, pressupostSACC: 210000, disponibilitat: 35736 },
-    ingressos: { mes: 3636, acumulat: 40000, projeccio: 40000, pressupostSACC: 40000, disponibilitat: 0 },
+    despeses: { mes: 90, acumulat: 900, projeccio: 1100, pressupostSACC: 1400, disponibilitat: 300 },
+    ingressos: { mes: 100, acumulat: 1000, projeccio: 1200, pressupostSACC: 1500, disponibilitat: 300 },
   },
   {
     codi: "GRO",
     nom: "Girona",
-    despeses: { mes: 72798, acumulat: 800779, projeccio: 873577, pressupostSACC: 900000, disponibilitat: 99221 },
-    ingressos: { mes: 0, acumulat: 0, projeccio: 0, pressupostSACC: 0, disponibilitat: 0 },
+    despeses: { mes: 45, acumulat: 450, projeccio: 580, pressupostSACC: 780, disponibilitat: 200 },
+    ingressos: { mes: 50, acumulat: 500, projeccio: 600, pressupostSACC: 800, disponibilitat: 200 },
   },
   {
     codi: "REU",
     nom: "Reus",
-    despeses: { mes: 40703, acumulat: 447737, projeccio: 488441, pressupostSACC: 520000, disponibilitat: 72263 },
-    ingressos: { mes: 0, acumulat: 0, projeccio: 0, pressupostSACC: 0, disponibilitat: 0 },
+    despeses: { mes: 35, acumulat: 380, projeccio: 520, pressupostSACC: 720, disponibilitat: 200 },
+    ingressos: { mes: 40, acumulat: 400, projeccio: 550, pressupostSACC: 700, disponibilitat: 150 },
   },
   {
     codi: "LLEI",
     nom: "Lleida-Alguaire",
-    despeses: { mes: 527259, acumulat: 5799850, projeccio: 6327109, pressupostSACC: 6800000, disponibilitat: 1000150 },
-    ingressos: { mes: 91853, acumulat: 1010385, projeccio: 1102238, pressupostSACC: 1150000, disponibilitat: 139615 },
+    despeses: { mes: 25, acumulat: 320, projeccio: 470, pressupostSACC: 670, disponibilitat: 200 },
+    ingressos: { mes: 30, acumulat: 300, projeccio: 450, pressupostSACC: 650, disponibilitat: 200 },
   },
   {
     codi: "LESU",
     nom: "Andorra-La Seu",
-    despeses: { mes: 144493, acumulat: 1589419, projeccio: 1733911, pressupostSACC: 1850000, disponibilitat: 260581 },
-    ingressos: { mes: 27593, acumulat: 303514, projeccio: 331107, pressupostSACC: 350000, disponibilitat: 46486 },
+    despeses: { mes: 15, acumulat: 220, projeccio: 320, pressupostSACC: 520, disponibilitat: 200 },
+    ingressos: { mes: 20, acumulat: 200, projeccio: 300, pressupostSACC: 500, disponibilitat: 200 },
   },
 ];
 
