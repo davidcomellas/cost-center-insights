@@ -1,241 +1,205 @@
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recharts";
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 import { comercialAeroports, comercialTotals, formatCurrency, chartColors } from "@/lib/dashboardData";
 
 const Comercial = () => {
-  // Datos para gráficos de pastel - PRESSUPOST
-  const pressupostDespesesData = comercialAeroports
-    .filter(a => a.despeses.pressupostSACC > 0)
-    .map((a, i) => ({ name: a.codi, value: a.despeses.pressupostSACC, color: chartColors[i % chartColors.length] }));
-
-  const pressupostIngressosData = comercialAeroports
-    .filter(a => a.ingressos.pressupostSACC > 0)
-    .map((a, i) => ({ name: a.codi, value: a.ingressos.pressupostSACC, color: chartColors[i % chartColors.length] }));
-
-  // Datos para gráficos de pastel - PREVISIÓ
-  const previsioData = comercialAeroports.map((a, i) => ({
-    name: a.codi,
-    despeses: a.despeses.projeccio,
-    ingressos: a.ingressos.projeccio,
+  // Datos para gráficos - Pressupost Inicial
+  const pressupostData = comercialAeroports.map((a, i) => ({
+    name: `${a.nom} (${a.codi})`,
+    value: a.despeses.pressupostSACC + a.ingressos.pressupostSACC,
     color: chartColors[i % chartColors.length],
   }));
 
-  const previsioDespesesData = comercialAeroports
-    .filter(a => a.despeses.projeccio > 0)
-    .map((a, i) => ({ name: a.codi, value: a.despeses.projeccio, color: chartColors[i % chartColors.length] }));
+  // Datos para gráficos - Projecció Tancament
+  const projeccioData = comercialAeroports.map((a, i) => ({
+    name: `${a.nom} (${a.codi})`,
+    value: a.despeses.projeccio + a.ingressos.projeccio,
+    color: chartColors[i % chartColors.length],
+  }));
 
-  const previsioIngressosData = comercialAeroports
-    .filter(a => a.ingressos.projeccio > 0)
-    .map((a, i) => ({ name: a.codi, value: a.ingressos.projeccio, color: chartColors[i % chartColors.length] }));
+  // Calcular porcentajes para labels
+  const totalPressupost = pressupostData.reduce((sum, d) => sum + d.value, 0);
+  const totalProjectio = projeccioData.reduce((sum, d) => sum + d.value, 0);
 
   const TableHeader = () => (
-    <tr className="bg-secondary/50">
-      <th className="px-2 py-1.5 text-left font-semibold text-foreground border-b border-border">Aeroport</th>
-      <th className="px-2 py-1.5 text-right font-semibold text-foreground border-b border-l border-border">MES</th>
-      <th className="px-2 py-1.5 text-right font-semibold text-foreground border-b border-l border-border">Acumulat</th>
-      <th className="px-2 py-1.5 text-right font-semibold text-foreground border-b border-l border-border">Projecció</th>
-      <th className="px-2 py-1.5 text-right font-semibold text-foreground border-b border-l border-border">Press. SACC</th>
-      <th className="px-2 py-1.5 text-right font-semibold text-foreground border-b border-l border-border">Disponib.</th>
+    <tr className="bg-primary text-primary-foreground">
+      <th className="px-3 py-2 text-left font-semibold text-[11px]">Aeroport</th>
+      <th className="px-3 py-2 text-right font-semibold text-[11px]">Acumulat</th>
+      <th className="px-3 py-2 text-right font-semibold text-[11px]">Projecció Tancament</th>
+      <th className="px-3 py-2 text-right font-semibold text-[11px]">Pressupost Inicial</th>
+      <th className="px-3 py-2 text-right font-semibold text-[11px]">Disponibilitat</th>
+      <th className="px-3 py-2 text-right font-semibold text-[11px]">Mes</th>
     </tr>
   );
 
+  // Componente de leyenda personalizado
+  const CustomLegend = ({ data }: { data: typeof pressupostData }) => (
+    <div className="flex flex-col gap-1 text-[10px]">
+      {data.map((entry, index) => (
+        <div key={index} className="flex items-center gap-2">
+          <div 
+            className="w-3 h-3 rounded-sm flex-shrink-0" 
+            style={{ backgroundColor: entry.color }} 
+          />
+          <span className="text-foreground truncate">{entry.name}</span>
+        </div>
+      ))}
+    </div>
+  );
+
   return (
-    <div className="space-y-4">
-      {/* Dos tablas lado a lado */}
-      <div className="grid grid-cols-2 gap-3">
-        {/* Tabla DESPESES */}
-        <div className="rounded-lg border border-border bg-card overflow-hidden opacity-0 animate-fade-in">
-          <div className="bg-destructive/80 px-3 py-2">
-            <h3 className="text-xs font-semibold text-destructive-foreground uppercase tracking-wide">
-              Despeses per Aeroport
-            </h3>
-          </div>
-          <table className="w-full text-[9px]">
-            <thead>
-              <TableHeader />
-            </thead>
-            <tbody>
-              {comercialAeroports.map((aeroport, index) => (
-                <tr key={aeroport.codi} className={index % 2 === 0 ? "bg-card" : "bg-muted/20"}>
-                  <td className="px-2 py-1 font-medium text-foreground border-b border-border">{aeroport.codi}</td>
-                  <td className="px-2 py-1 text-right font-mono text-foreground border-b border-l border-border">{formatCurrency(aeroport.despeses.mes)}</td>
-                  <td className="px-2 py-1 text-right font-mono text-foreground border-b border-l border-border">{formatCurrency(aeroport.despeses.acumulat)}</td>
-                  <td className="px-2 py-1 text-right font-mono text-foreground border-b border-l border-border">{formatCurrency(aeroport.despeses.projeccio)}</td>
-                  <td className="px-2 py-1 text-right font-mono text-foreground border-b border-l border-border">{formatCurrency(aeroport.despeses.pressupostSACC)}</td>
-                  <td className="px-2 py-1 text-right font-mono text-success border-b border-l border-border">{formatCurrency(aeroport.despeses.disponibilitat)}</td>
-                </tr>
-              ))}
-              <tr className="bg-primary/5 font-bold">
-                <td className="px-2 py-1.5 font-bold text-foreground border-t-2 border-primary">TOTAL</td>
-                <td className="px-2 py-1.5 text-right font-mono text-foreground border-t-2 border-l border-primary">{formatCurrency(comercialTotals.despeses.mes)}</td>
-                <td className="px-2 py-1.5 text-right font-mono text-foreground border-t-2 border-l border-primary">{formatCurrency(comercialTotals.despeses.acumulat)}</td>
-                <td className="px-2 py-1.5 text-right font-mono text-foreground border-t-2 border-l border-primary">{formatCurrency(comercialTotals.despeses.projeccio)}</td>
-                <td className="px-2 py-1.5 text-right font-mono text-foreground border-t-2 border-l border-primary">{formatCurrency(comercialTotals.despeses.pressupostSACC)}</td>
-                <td className="px-2 py-1.5 text-right font-mono text-success border-t-2 border-l border-primary">{formatCurrency(comercialTotals.despeses.disponibilitat)}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+    <div className="h-full flex gap-6">
+      {/* Columna izquierda: Título y Tabla */}
+      <div className="flex-1 flex flex-col">
+        {/* Título grande */}
+        <h2 className="text-3xl font-bold text-primary mb-6 leading-tight">
+          PRESSUPOST X<br />CENTRE DE COST
+        </h2>
 
-        {/* Tabla INGRESSOS */}
-        <div className="rounded-lg border border-border bg-card overflow-hidden opacity-0 animate-fade-in" style={{ animationDelay: "50ms" }}>
-          <div className="bg-success/80 px-3 py-2">
-            <h3 className="text-xs font-semibold text-white uppercase tracking-wide">
-              Ingressos per Aeroport
-            </h3>
-          </div>
-          <table className="w-full text-[9px]">
+        {/* Tabla única combinada */}
+        <div className="rounded-lg border border-border bg-card overflow-hidden">
+          <table className="w-full text-[11px]">
             <thead>
               <TableHeader />
             </thead>
             <tbody>
-              {comercialAeroports.map((aeroport, index) => (
-                <tr key={aeroport.codi} className={index % 2 === 0 ? "bg-card" : "bg-muted/20"}>
-                  <td className="px-2 py-1 font-medium text-foreground border-b border-border">{aeroport.codi}</td>
-                  <td className="px-2 py-1 text-right font-mono text-foreground border-b border-l border-border">{formatCurrency(aeroport.ingressos.mes)}</td>
-                  <td className="px-2 py-1 text-right font-mono text-foreground border-b border-l border-border">{formatCurrency(aeroport.ingressos.acumulat)}</td>
-                  <td className="px-2 py-1 text-right font-mono text-foreground border-b border-l border-border">{formatCurrency(aeroport.ingressos.projeccio)}</td>
-                  <td className="px-2 py-1 text-right font-mono text-foreground border-b border-l border-border">{formatCurrency(aeroport.ingressos.pressupostSACC)}</td>
-                  <td className="px-2 py-1 text-right font-mono text-success border-b border-l border-border">{formatCurrency(aeroport.ingressos.disponibilitat)}</td>
-                </tr>
-              ))}
-              <tr className="bg-primary/5 font-bold">
-                <td className="px-2 py-1.5 font-bold text-foreground border-t-2 border-primary">TOTAL</td>
-                <td className="px-2 py-1.5 text-right font-mono text-foreground border-t-2 border-l border-primary">{formatCurrency(comercialTotals.ingressos.mes)}</td>
-                <td className="px-2 py-1.5 text-right font-mono text-foreground border-t-2 border-l border-primary">{formatCurrency(comercialTotals.ingressos.acumulat)}</td>
-                <td className="px-2 py-1.5 text-right font-mono text-foreground border-t-2 border-l border-primary">{formatCurrency(comercialTotals.ingressos.projeccio)}</td>
-                <td className="px-2 py-1.5 text-right font-mono text-foreground border-t-2 border-l border-primary">{formatCurrency(comercialTotals.ingressos.pressupostSACC)}</td>
-                <td className="px-2 py-1.5 text-right font-mono text-success border-t-2 border-l border-primary">{formatCurrency(comercialTotals.ingressos.disponibilitat)}</td>
+              {comercialAeroports.map((aeroport, index) => {
+                const acumulat = aeroport.despeses.acumulat + aeroport.ingressos.acumulat;
+                const projeccio = aeroport.despeses.projeccio + aeroport.ingressos.projeccio;
+                const pressupost = aeroport.despeses.pressupostSACC + aeroport.ingressos.pressupostSACC;
+                const disponibilitat = aeroport.despeses.disponibilitat + aeroport.ingressos.disponibilitat;
+                const mes = aeroport.despeses.mes + aeroport.ingressos.mes;
+                
+                return (
+                  <tr key={aeroport.codi} className={index % 2 === 0 ? "bg-muted/30" : "bg-card"}>
+                    <td className="px-3 py-2 font-medium text-foreground">{aeroport.nom} ({aeroport.codi})</td>
+                    <td className="px-3 py-2 text-right font-mono text-foreground">{formatCurrency(acumulat)}</td>
+                    <td className="px-3 py-2 text-right font-mono text-foreground">{formatCurrency(projeccio)}</td>
+                    <td className="px-3 py-2 text-right font-mono text-foreground">{formatCurrency(pressupost)}</td>
+                    <td className="px-3 py-2 text-right font-mono text-foreground">{formatCurrency(disponibilitat)}</td>
+                    <td className="px-3 py-2 text-right font-mono text-foreground">{formatCurrency(mes)}</td>
+                  </tr>
+                );
+              })}
+              <tr className="bg-primary/10 font-bold border-t-2 border-primary">
+                <td className="px-3 py-2 font-bold text-foreground">TOTAL</td>
+                <td className="px-3 py-2 text-right font-mono text-foreground">
+                  {formatCurrency(comercialTotals.despeses.acumulat + comercialTotals.ingressos.acumulat)}
+                </td>
+                <td className="px-3 py-2 text-right font-mono text-foreground">
+                  {formatCurrency(comercialTotals.despeses.projeccio + comercialTotals.ingressos.projeccio)}
+                </td>
+                <td className="px-3 py-2 text-right font-mono text-foreground">
+                  {formatCurrency(comercialTotals.despeses.pressupostSACC + comercialTotals.ingressos.pressupostSACC)}
+                </td>
+                <td className="px-3 py-2 text-right font-mono text-foreground">
+                  {formatCurrency(comercialTotals.despeses.disponibilitat + comercialTotals.ingressos.disponibilitat)}
+                </td>
+                <td className="px-3 py-2 text-right font-mono text-foreground">
+                  {formatCurrency(comercialTotals.despeses.mes + comercialTotals.ingressos.mes)}
+                </td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
 
-      {/* Gráficos de pastel */}
-      <div className="grid grid-cols-2 gap-3">
-        {/* PRESSUPOST */}
-        <div className="rounded-lg border border-border bg-card p-3 opacity-0 animate-fade-in" style={{ animationDelay: "100ms" }}>
-          <h4 className="text-xs font-semibold text-foreground uppercase tracking-wide mb-2 text-center">
-            Pressupost SACC
+      {/* Columna derecha: Gráficos con leyendas */}
+      <div className="w-[340px] flex flex-col gap-4">
+        {/* Gráfico Pressupost Inicial */}
+        <div className="flex-1 flex flex-col">
+          <h4 className="text-sm font-bold text-primary text-center mb-2 underline">
+            Pressupost Inicial
           </h4>
-          <div className="grid grid-cols-2 gap-2">
-            <div>
-              <p className="text-[9px] text-center text-muted-foreground mb-1">Despeses</p>
-              <div className="h-28">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie 
-                      data={pressupostDespesesData} 
-                      cx="50%" 
-                      cy="50%" 
-                      outerRadius={40} 
-                      paddingAngle={2} 
-                      dataKey="value"
-                      label={({ name }) => name}
-                      labelLine={false}
-                    >
-                      {pressupostDespesesData.map((entry, index) => (
-                        <Cell key={index} fill={entry.color} />
-                      ))}
-                    </Pie>
-                    <Tooltip formatter={(value: number) => formatCurrency(value)} />
-                  </PieChart>
-                </ResponsiveContainer>
-              </div>
+          <div className="flex items-center gap-3 flex-1">
+            <div className="w-[160px] h-[140px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={pressupostData}
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={60}
+                    dataKey="value"
+                    label={({ cx, cy, midAngle, innerRadius, outerRadius, percent }) => {
+                      if (percent < 0.05) return null;
+                      const RADIAN = Math.PI / 180;
+                      const radius = outerRadius + 15;
+                      const x = cx + radius * Math.cos(-midAngle * RADIAN);
+                      const y = cy + radius * Math.sin(-midAngle * RADIAN);
+                      return (
+                        <text
+                          x={x}
+                          y={y}
+                          fill="hsl(var(--foreground))"
+                          textAnchor={x > cx ? "start" : "end"}
+                          dominantBaseline="central"
+                          fontSize={9}
+                        >
+                          {`${(percent * 100).toFixed(1)}%`}
+                        </text>
+                      );
+                    }}
+                    labelLine={false}
+                  >
+                    {pressupostData.map((entry, index) => (
+                      <Cell key={index} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <Tooltip formatter={(value: number) => formatCurrency(value)} />
+                </PieChart>
+              </ResponsiveContainer>
             </div>
-            <div>
-              <p className="text-[9px] text-center text-muted-foreground mb-1">Ingressos</p>
-              <div className="h-28">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie 
-                      data={pressupostIngressosData} 
-                      cx="50%" 
-                      cy="50%" 
-                      outerRadius={40} 
-                      paddingAngle={2} 
-                      dataKey="value"
-                      label={({ name }) => name}
-                      labelLine={false}
-                    >
-                      {pressupostIngressosData.map((entry, index) => (
-                        <Cell key={index} fill={entry.color} />
-                      ))}
-                    </Pie>
-                    <Tooltip formatter={(value: number) => formatCurrency(value)} />
-                  </PieChart>
-                </ResponsiveContainer>
-              </div>
-            </div>
+            <CustomLegend data={pressupostData} />
           </div>
         </div>
 
-        {/* PREVISIÓ */}
-        <div className="rounded-lg border border-border bg-card p-3 opacity-0 animate-fade-in" style={{ animationDelay: "150ms" }}>
-          <h4 className="text-xs font-semibold text-foreground uppercase tracking-wide mb-2 text-center">
-            Previsió (Projecció)
+        {/* Gráfico Projecció Tancament */}
+        <div className="flex-1 flex flex-col">
+          <h4 className="text-sm font-bold text-primary text-center mb-2 underline">
+            Projecció Tancament
           </h4>
-          <div className="grid grid-cols-2 gap-2">
-            <div>
-              <p className="text-[9px] text-center text-muted-foreground mb-1">Despeses</p>
-              <div className="h-28">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie 
-                      data={previsioDespesesData} 
-                      cx="50%" 
-                      cy="50%" 
-                      outerRadius={40} 
-                      paddingAngle={2} 
-                      dataKey="value"
-                      label={({ name }) => name}
-                      labelLine={false}
-                    >
-                      {previsioDespesesData.map((entry, index) => (
-                        <Cell key={index} fill={entry.color} />
-                      ))}
-                    </Pie>
-                    <Tooltip formatter={(value: number) => formatCurrency(value)} />
-                  </PieChart>
-                </ResponsiveContainer>
-              </div>
+          <div className="flex items-center gap-3 flex-1">
+            <div className="w-[160px] h-[140px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={projeccioData}
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={60}
+                    dataKey="value"
+                    label={({ cx, cy, midAngle, innerRadius, outerRadius, percent }) => {
+                      if (percent < 0.05) return null;
+                      const RADIAN = Math.PI / 180;
+                      const radius = outerRadius + 15;
+                      const x = cx + radius * Math.cos(-midAngle * RADIAN);
+                      const y = cy + radius * Math.sin(-midAngle * RADIAN);
+                      return (
+                        <text
+                          x={x}
+                          y={y}
+                          fill="hsl(var(--foreground))"
+                          textAnchor={x > cx ? "start" : "end"}
+                          dominantBaseline="central"
+                          fontSize={9}
+                        >
+                          {`${(percent * 100).toFixed(1)}%`}
+                        </text>
+                      );
+                    }}
+                    labelLine={false}
+                  >
+                    {projeccioData.map((entry, index) => (
+                      <Cell key={index} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <Tooltip formatter={(value: number) => formatCurrency(value)} />
+                </PieChart>
+              </ResponsiveContainer>
             </div>
-            <div>
-              <p className="text-[9px] text-center text-muted-foreground mb-1">Ingressos</p>
-              <div className="h-28">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie 
-                      data={previsioIngressosData} 
-                      cx="50%" 
-                      cy="50%" 
-                      outerRadius={40} 
-                      paddingAngle={2} 
-                      dataKey="value"
-                      label={({ name }) => name}
-                      labelLine={false}
-                    >
-                      {previsioIngressosData.map((entry, index) => (
-                        <Cell key={index} fill={entry.color} />
-                      ))}
-                    </Pie>
-                    <Tooltip formatter={(value: number) => formatCurrency(value)} />
-                  </PieChart>
-                </ResponsiveContainer>
-              </div>
-            </div>
+            <CustomLegend data={projeccioData} />
           </div>
         </div>
-      </div>
-
-      {/* Leyenda */}
-      <div className="flex justify-center gap-4 opacity-0 animate-fade-in" style={{ animationDelay: "200ms" }}>
-        {comercialAeroports.map((a, i) => (
-          <div key={a.codi} className="flex items-center gap-1.5">
-            <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: chartColors[i % chartColors.length] }} />
-            <span className="text-[9px] text-muted-foreground">{a.codi} - {a.nom}</span>
-          </div>
-        ))}
       </div>
     </div>
   );
