@@ -48,8 +48,8 @@ const EvolucioHistorica = () => {
                 <XAxis dataKey="any" tick={{ fontSize: 10 }} stroke="hsl(var(--muted-foreground))" />
                 <YAxis tick={{ fontSize: 9 }} stroke="hsl(var(--muted-foreground))" tickFormatter={(v) => `${(v / 1000000).toFixed(0)}M`} />
                 <Tooltip content={<CustomTooltip />} />
-                <Line type="monotone" dataKey="capitol2" name="Capítol 2" stroke="hsl(215, 80%, 35%)" strokeWidth={2} dot={{ r: 3 }} />
-                <Line type="monotone" dataKey="personal" name="Personal" stroke="hsl(168, 65%, 40%)" strokeWidth={2} dot={{ r: 3 }} />
+                <Line type="monotone" dataKey="capitol2" name="Capítol 2" stroke="hsl(0, 72%, 40%)" strokeWidth={2} dot={{ r: 3 }} />
+                <Line type="monotone" dataKey="personal" name="Personal" stroke="hsl(10, 65%, 50%)" strokeWidth={2} dot={{ r: 3 }} />
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -66,7 +66,7 @@ const EvolucioHistorica = () => {
                 <XAxis dataKey="any" tick={{ fontSize: 10 }} stroke="hsl(var(--muted-foreground))" />
                 <YAxis tick={{ fontSize: 9 }} stroke="hsl(var(--muted-foreground))" tickFormatter={(v) => `${(v / 1000000).toFixed(0)}M`} />
                 <Tooltip content={<CustomTooltip />} />
-                <Line type="monotone" dataKey="inversions" name="Inversions" stroke="hsl(38, 92%, 50%)" strokeWidth={2} dot={{ r: 3 }} />
+                <Line type="monotone" dataKey="inversions" name="Inversions" stroke="hsl(20, 80%, 55%)" strokeWidth={2} dot={{ r: 3 }} />
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -86,7 +86,7 @@ const EvolucioHistorica = () => {
                 <XAxis dataKey="any" tick={{ fontSize: 10 }} stroke="hsl(var(--muted-foreground))" />
                 <YAxis tick={{ fontSize: 9 }} stroke="hsl(var(--muted-foreground))" tickFormatter={(v) => `${(v / 1000000).toFixed(1)}M`} />
                 <Tooltip content={<CustomTooltip />} />
-                <Line type="monotone" dataKey="ingressosMercat" name="Ingressos Mercat" stroke="hsl(280, 65%, 50%)" strokeWidth={2} dot={{ r: 3 }} />
+                <Line type="monotone" dataKey="ingressosMercat" name="Ingressos Mercat" stroke="hsl(350, 60%, 45%)" strokeWidth={2} dot={{ r: 3 }} />
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -103,7 +103,7 @@ const EvolucioHistorica = () => {
                 <XAxis dataKey="any" tick={{ fontSize: 10 }} stroke="hsl(var(--muted-foreground))" />
                 <YAxis tick={{ fontSize: 9 }} stroke="hsl(var(--muted-foreground))" tickFormatter={(v) => `${(v / 1000000).toFixed(0)}M`} />
                 <Tooltip content={<CustomTooltip />} />
-                <Line type="monotone" dataKey="transferencies" name="Transferències" stroke="hsl(330, 70%, 50%)" strokeWidth={2} dot={{ r: 3 }} />
+                <Line type="monotone" dataKey="transferencies" name="Transferències" stroke="hsl(5, 55%, 60%)" strokeWidth={2} dot={{ r: 3 }} />
               </LineChart>
             </ResponsiveContainer>
           </div>
